@@ -42,9 +42,9 @@ class ControllerV4:
 
         # load relation filter
         self.relation_freq = json.load(
-            open(join('/raid/liuxiao/nell_data/wikidata/wikidata_relation_tail_uniqueness_frequency_stats.json')))
+            open(join('/raid/xll/nell_data/wikidata/wikidata_relation_tail_uniqueness_frequency_stats.json')))
         self.relation_tails = json.load(
-            open(join('/raid/liuxiao/nell_data/wikidata/wikidata_relation_to_candidate_aliases.json')))
+            open(join('/raid/xll/nell_data/wikidata/wikidata_relation_to_candidate_aliases.json')))
         self.threshold = 4.0
 
         # create negative logging
