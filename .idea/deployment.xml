@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="xll@58.18.174.252:2201 agent" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="dgx1">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/raid/xll/neptune" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="xll@58.18.174.252:2201 agent">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/raid/xll/neptune" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

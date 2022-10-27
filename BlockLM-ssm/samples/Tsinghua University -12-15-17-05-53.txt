@@ -1,0 +1,4 @@
+ [CLS] Tsinghua University (Chinese: 清华大学) is a major public research university in Beijing, and a member of the C9 League. In other words, Tsinghua University is a member of the Chinese Academy of Sciences
+ [CLS] Tsinghua University (Chinese: 清华大学) is a major public research university in Beijing, and a member of the C9 League. In other words, Tsinghua University is a member of the Chinese Academy of Sciences
+ [CLS] Tsinghua University (Chinese: 清华大学) is a major public research university in Beijing, and a member of the C9 League. In other words, Tsinghua University is a member of the Chinese Academy of Sciences
+ [CLS] Tsinghua University (Chinese: 清华大学) is a major public research university in Beijing, and a member of the C9 League. In other words, Tsinghua University is a member of the Chinese Association of Science and Technology
