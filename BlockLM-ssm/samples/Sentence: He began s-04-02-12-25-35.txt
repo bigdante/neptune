@@ -1,0 +1,4 @@
+ [CLS] Sentence: He began studying piano at an early age , but switched to saxophone in middle school after hearing a record by Stan Getz . TL;DR ( if no, stop generate ) Stan Getz was a great teacher of the saxophone
+ [CLS] Sentence: He began studying piano at an early age , but switched to saxophone in middle school after hearing a record by Stan Getz . TL;DR ( if no, stop generate ) Stan Getz was a great teacher of the saxophone
+ [CLS] Sentence: He began studying piano at an early age , but switched to saxophone in middle school after hearing a record by Stan Getz . TL;DR ( if no, stop generate ) Stan Getz was a great teacher of the saxophone
+ [CLS] Sentence: He began studying piano at an early age , but switched to saxophone in middle school after hearing a record by Stan Getz . TL;DR ( if no, stop generate ) Stan Getz was a great teacher of the saxophone

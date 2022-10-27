@@ -1,0 +1,19 @@
+ [CLS] Malvern water is a natural spring water from the Malvern Hills on the border of the counties of Herefordshire and Worcestershire in England. According to the context, is it True or False that 'Worcestershire located in the administrative territorial entity Herefordshire' mentioned? The answer is True.
+
+How can we find an answer?
+
+1.
+
+Answer 1
+
+2.
+
+Answer 2
+
+3.
+
+Answer 3
+
+Wrong
+
+The answer to question 1 is True. The answer to question 2 is False. The answer to question 3

@@ -1,0 +1,213 @@
+[2021-12-15 04:12:37,513] [WARNING] [runner.py:122:fetch_hostfile] Unable to find hostfile, will proceed with training with local resources only.
+[2021-12-15 04:12:38,568] [INFO] [runner.py:360:main] cmd = /opt/conda/bin/python -u -m deepspeed.launcher.launch --world_info=eyJsb2NhbGhvc3QiOiBbMCwgMSwgMiwgMywgNCwgNSwgNiwgN119 --master_addr=127.0.0.1 --master_port=55090 pretrain_glm.py --block-lm --task-mask --bert-prob 1.0 --gap-sentence-prob 0.0 --avg-block-length 3 --gpt-min-ratio 0.0 --gpt-infill-prob 0.0 --block-mask-prob 0.1 --experiment-name blocklm-10b-ssm --model-parallel-size 1 --num-layers 48 --hidden-size 4096 --num-attention-heads 64 --seq-length 513 --max-sequence-length 1025 --save /dataset/fd5061f6/english_data/checkpoints --load /dataset/fd5061f6/english_data/checkpoints/blocklm-10b-512 --old-checkpoint --no-load-optim --log-interval 50 --eval-interval 1000 --save-interval 2000 --train-iters 250000 --train-data wikipedia_ssm --filter-english --tokenizer-type GPT2BPETokenizer --tokenizer-model-type gpt2 --split 949,50,1 --distributed-backend nccl --lr-decay-style cosine --lr-decay-ratio 0.1 --lr-decay-iters 175000 --warmup 0.04 --checkpoint-activations --fp16 --deepspeed --deepspeed_config /dataset/fd5061f6/liuxiao/BlockLM-ssm/config/config_block_10B.json
+[2021-12-15 04:12:39,199] [INFO] [launch.py:73:main] 0 NCCL_IB_DISABLE 0
+[2021-12-15 04:12:39,199] [INFO] [launch.py:73:main] 0 NCCL_DEBUG info
+[2021-12-15 04:12:39,199] [INFO] [launch.py:73:main] 0 NCCL_NET_GDR_LEVEL 2
+[2021-12-15 04:12:39,199] [INFO] [launch.py:80:main] WORLD INFO DICT: {'localhost': [0, 1, 2, 3, 4, 5, 6, 7]}
+[2021-12-15 04:12:39,199] [INFO] [launch.py:86:main] nnodes=1, num_local_procs=8, node_rank=0
+[2021-12-15 04:12:39,199] [INFO] [launch.py:101:main] global_rank_mapping=defaultdict(<class 'list'>, {'localhost': [0, 1, 2, 3, 4, 5, 6, 7]})
+[2021-12-15 04:12:39,199] [INFO] [launch.py:102:main] dist_world_size=8
+[2021-12-15 04:12:39,199] [INFO] [launch.py:104:main] Setting CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+using world size: 8 and model-parallel size: 1 
+> initializing model parallel with size 1
+[2021-12-15 04:12:42,775] [WARNING] [config.py:79:_sanity_check] DeepSpeedConfig: cpu_offload is deprecated. Please use offload_optimizer.
+[2021-12-15 04:12:42,775] [INFO] [checkpointing.py:734:_configure_using_config_file] {'partition_activations': False, 'contiguous_memory_optimization': False, 'cpu_checkpointing': False, 'number_checkpoints': None, 'synchronize_checkpoint_boundary': False, 'profile': False}
+[2021-12-15 04:12:42,775] [WARNING] [config.py:79:_sanity_check] DeepSpeedConfig: cpu_offload is deprecated. Please use offload_optimizer.
+[2021-12-15 04:12:42,775] [INFO] [checkpointing.py:223:model_parallel_cuda_manual_seed] > initializing model parallel cuda seeds on global rank 0, model parallel rank 0, and data parallel rank 0 with model parallel seed: 3952 and data parallel seed: 1234
+[2021-12-15 04:12:42,778] [WARNING] [config.py:79:_sanity_check] DeepSpeedConfig: cpu_offload is deprecated. Please use offload_optimizer.
+[2021-12-15 04:12:42,779] [WARNING] [config.py:79:_sanity_check] DeepSpeedConfig: cpu_offload is deprecated. Please use offload_optimizer.
+[2021-12-15 04:12:42,779] [WARNING] [config.py:79:_sanity_check] DeepSpeedConfig: cpu_offload is deprecated. Please use offload_optimizer.
+[2021-12-15 04:12:42,779] [WARNING] [config.py:79:_sanity_check] DeepSpeedConfig: cpu_offload is deprecated. Please use offload_optimizer.
+[2021-12-15 04:12:42,779] [WARNING] [config.py:79:_sanity_check] DeepSpeedConfig: cpu_offload is deprecated. Please use offload_optimizer.
+[2021-12-15 04:12:42,783] [WARNING] [config.py:79:_sanity_check] DeepSpeedConfig: cpu_offload is deprecated. Please use offload_optimizer.
+[CommandToken(name='pad', token='<|endoftext|>', Id=50256), CommandToken(name='eos', token='<|endoftext|>', Id=50256), CommandToken(name='sop', token='<|startofpiece|>', Id=50257), CommandToken(name='eop', token='<|endofpiece|>', Id=50258), CommandToken(name='ENC', token='[CLS]', Id=50259), CommandToken(name='MASK', token='[MASK]', Id=50260), CommandToken(name='sep', token='[SEP]', Id=50261), CommandToken(name='unk', token='[UNK]', Id=50262), CommandToken(name='gMASK', token='[gMASK]', Id=50263), CommandToken(name='sMASK', token='[sMASK]', Id=50264), CommandToken(name='dBLOCK', token='[dBLOCK]', Id=50265)]
+[CommandToken(name='pad', token='<|endoftext|>', Id=50256), CommandToken(name='eos', token='<|endoftext|>', Id=50256), CommandToken(name='sop', token='<|startofpiece|>', Id=50257), CommandToken(name='eop', token='<|endofpiece|>', Id=50258), CommandToken(name='ENC', token='[CLS]', Id=50259), CommandToken(name='MASK', token='[MASK]', Id=50260), CommandToken(name='sep', token='[SEP]', Id=50261), CommandToken(name='unk', token='[UNK]', Id=50262), CommandToken(name='gMASK', token='[gMASK]', Id=50263), CommandToken(name='sMASK', token='[sMASK]', Id=50264), CommandToken(name='dBLOCK', token='[dBLOCK]', Id=50265)]
+[CommandToken(name='pad', token='<|endoftext|>', Id=50256), CommandToken(name='eos', token='<|endoftext|>', Id=50256), CommandToken(name='sop', token='<|startofpiece|>', Id=50257), CommandToken(name='eop', token='<|endofpiece|>', Id=50258), CommandToken(name='ENC', token='[CLS]', Id=50259), CommandToken(name='MASK', token='[MASK]', Id=50260), CommandToken(name='sep', token='[SEP]', Id=50261), CommandToken(name='unk', token='[UNK]', Id=50262), CommandToken(name='gMASK', token='[gMASK]', Id=50263), CommandToken(name='sMASK', token='[sMASK]', Id=50264), CommandToken(name='dBLOCK', token='[dBLOCK]', Id=50265)]
+[CommandToken(name='pad', token='<|endoftext|>', Id=50256), CommandToken(name='eos', token='<|endoftext|>', Id=50256), CommandToken(name='sop', token='<|startofpiece|>', Id=50257), CommandToken(name='eop', token='<|endofpiece|>', Id=50258), CommandToken(name='ENC', token='[CLS]', Id=50259), CommandToken(name='MASK', token='[MASK]', Id=50260), CommandToken(name='sep', token='[SEP]', Id=50261), CommandToken(name='unk', token='[UNK]', Id=50262), CommandToken(name='gMASK', token='[gMASK]', Id=50263), CommandToken(name='sMASK', token='[sMASK]', Id=50264), CommandToken(name='dBLOCK', token='[dBLOCK]', Id=50265)]
+[CommandToken(name='pad', token='<|endoftext|>', Id=50256), CommandToken(name='eos', token='<|endoftext|>', Id=50256), CommandToken(name='sop', token='<|startofpiece|>', Id=50257), CommandToken(name='eop', token='<|endofpiece|>', Id=50258), CommandToken(name='ENC', token='[CLS]', Id=50259), CommandToken(name='MASK', token='[MASK]', Id=50260), CommandToken(name='sep', token='[SEP]', Id=50261), CommandToken(name='unk', token='[UNK]', Id=50262), CommandToken(name='gMASK', token='[gMASK]', Id=50263), CommandToken(name='sMASK', token='[sMASK]', Id=50264), CommandToken(name='dBLOCK', token='[dBLOCK]', Id=50265)]
+[CommandToken(name='pad', token='<|endoftext|>', Id=50256), CommandToken(name='eos', token='<|endoftext|>', Id=50256), CommandToken(name='sop', token='<|startofpiece|>', Id=50257), CommandToken(name='eop', token='<|endofpiece|>', Id=50258), CommandToken(name='ENC', token='[CLS]', Id=50259), CommandToken(name='MASK', token='[MASK]', Id=50260), CommandToken(name='sep', token='[SEP]', Id=50261), CommandToken(name='unk', token='[UNK]', Id=50262), CommandToken(name='gMASK', token='[gMASK]', Id=50263), CommandToken(name='sMASK', token='[sMASK]', Id=50264), CommandToken(name='dBLOCK', token='[dBLOCK]', Id=50265)]
+> padded vocab (size: 50266) with 38 dummy tokens (new size: 50304)
+prepare tokenizer done
+configuring data
+[CommandToken(name='pad', token='<|endoftext|>', Id=50256), CommandToken(name='eos', token='<|endoftext|>', Id=50256), CommandToken(name='sop', token='<|startofpiece|>', Id=50257), CommandToken(name='eop', token='<|endofpiece|>', Id=50258), CommandToken(name='ENC', token='[CLS]', Id=50259), CommandToken(name='MASK', token='[MASK]', Id=50260), CommandToken(name='sep', token='[SEP]', Id=50261), CommandToken(name='unk', token='[UNK]', Id=50262), CommandToken(name='gMASK', token='[gMASK]', Id=50263), CommandToken(name='sMASK', token='[sMASK]', Id=50264), CommandToken(name='dBLOCK', token='[dBLOCK]', Id=50265)]
+[CommandToken(name='pad', token='<|endoftext|>', Id=50256), CommandToken(name='eos', token='<|endoftext|>', Id=50256), CommandToken(name='sop', token='<|startofpiece|>', Id=50257), CommandToken(name='eop', token='<|endofpiece|>', Id=50258), CommandToken(name='ENC', token='[CLS]', Id=50259), CommandToken(name='MASK', token='[MASK]', Id=50260), CommandToken(name='sep', token='[SEP]', Id=50261), CommandToken(name='unk', token='[UNK]', Id=50262), CommandToken(name='gMASK', token='[gMASK]', Id=50263), CommandToken(name='sMASK', token='[sMASK]', Id=50264), CommandToken(name='dBLOCK', token='[dBLOCK]', Id=50265)]
+Traceback (most recent call last):
+  File "pretrain_glm.py", line 543, in <module>
+    main()
+  File "pretrain_glm.py", line 451, in main
+    train_data, val_data, test_data, = get_train_val_test_data(args, tokenizer)
+  File "pretrain_glm.py", line 409, in get_train_val_test_data
+    train_data, val_data, test_data = data_config.apply(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 119, in apply
+    return make_loaders(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 236, in make_loaders
+    train = data_utils.make_dataset(**data_set_args)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in make_dataset
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in <listcomp>
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 102, in get_dataset
+    ssm_indices = LazyLoader(lazy_path, data_type='ssm_idx', map_fn=map_fn, mem_map=True,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/lazy_loader.py", line 190, in __init__
+    self.lens = pkl.load(open(lenpath, 'rb'))
+EOFError: Ran out of input
+Traceback (most recent call last):
+  File "pretrain_glm.py", line 543, in <module>
+    main()
+  File "pretrain_glm.py", line 451, in main
+    train_data, val_data, test_data, = get_train_val_test_data(args, tokenizer)
+  File "pretrain_glm.py", line 409, in get_train_val_test_data
+    train_data, val_data, test_data = data_config.apply(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 119, in apply
+    return make_loaders(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 236, in make_loaders
+    train = data_utils.make_dataset(**data_set_args)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in make_dataset
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in <listcomp>
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 102, in get_dataset
+    ssm_indices = LazyLoader(lazy_path, data_type='ssm_idx', map_fn=map_fn, mem_map=True,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/lazy_loader.py", line 190, in __init__
+Traceback (most recent call last):
+  File "pretrain_glm.py", line 543, in <module>
+    self.lens = pkl.load(open(lenpath, 'rb'))
+EOFError: Ran out of input
+    main()
+  File "pretrain_glm.py", line 451, in main
+    train_data, val_data, test_data, = get_train_val_test_data(args, tokenizer)
+  File "pretrain_glm.py", line 409, in get_train_val_test_data
+    train_data, val_data, test_data = data_config.apply(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 119, in apply
+    return make_loaders(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 236, in make_loaders
+    train = data_utils.make_dataset(**data_set_args)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in make_dataset
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in <listcomp>
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 102, in get_dataset
+    ssm_indices = LazyLoader(lazy_path, data_type='ssm_idx', map_fn=map_fn, mem_map=True,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/lazy_loader.py", line 190, in __init__
+    self.lens = pkl.load(open(lenpath, 'rb'))
+EOFError: Ran out of input
+Traceback (most recent call last):
+  File "pretrain_glm.py", line 543, in <module>
+    main()
+  File "pretrain_glm.py", line 451, in main
+    train_data, val_data, test_data, = get_train_val_test_data(args, tokenizer)
+  File "pretrain_glm.py", line 409, in get_train_val_test_data
+    train_data, val_data, test_data = data_config.apply(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 119, in apply
+    return make_loaders(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 236, in make_loaders
+    train = data_utils.make_dataset(**data_set_args)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in make_dataset
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in <listcomp>
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 102, in get_dataset
+    ssm_indices = LazyLoader(lazy_path, data_type='ssm_idx', map_fn=map_fn, mem_map=True,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/lazy_loader.py", line 190, in __init__
+    self.lens = pkl.load(open(lenpath, 'rb'))
+EOFError: Ran out of input
+Traceback (most recent call last):
+  File "pretrain_glm.py", line 543, in <module>
+    main()
+  File "pretrain_glm.py", line 451, in main
+    train_data, val_data, test_data, = get_train_val_test_data(args, tokenizer)
+  File "pretrain_glm.py", line 409, in get_train_val_test_data
+    train_data, val_data, test_data = data_config.apply(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 119, in apply
+    return make_loaders(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 236, in make_loaders
+    train = data_utils.make_dataset(**data_set_args)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in make_dataset
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in <listcomp>
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 102, in get_dataset
+    ssm_indices = LazyLoader(lazy_path, data_type='ssm_idx', map_fn=map_fn, mem_map=True,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/lazy_loader.py", line 190, in __init__
+    self.lens = pkl.load(open(lenpath, 'rb'))
+EOFError: Ran out of input
+Traceback (most recent call last):
+  File "pretrain_glm.py", line 543, in <module>
+    main()
+  File "pretrain_glm.py", line 451, in main
+    train_data, val_data, test_data, = get_train_val_test_data(args, tokenizer)
+  File "pretrain_glm.py", line 409, in get_train_val_test_data
+    train_data, val_data, test_data = data_config.apply(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 119, in apply
+    return make_loaders(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 236, in make_loaders
+    train = data_utils.make_dataset(**data_set_args)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in make_dataset
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in <listcomp>
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 102, in get_dataset
+    ssm_indices = LazyLoader(lazy_path, data_type='ssm_idx', map_fn=map_fn, mem_map=True,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/lazy_loader.py", line 190, in __init__
+    self.lens = pkl.load(open(lenpath, 'rb'))
+EOFError: Ran out of input
+Traceback (most recent call last):
+  File "pretrain_glm.py", line 543, in <module>
+    main()
+  File "pretrain_glm.py", line 451, in main
+    train_data, val_data, test_data, = get_train_val_test_data(args, tokenizer)
+  File "pretrain_glm.py", line 409, in get_train_val_test_data
+    train_data, val_data, test_data = data_config.apply(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 119, in apply
+    return make_loaders(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 236, in make_loaders
+    train = data_utils.make_dataset(**data_set_args)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in make_dataset
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in <listcomp>
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 102, in get_dataset
+    ssm_indices = LazyLoader(lazy_path, data_type='ssm_idx', map_fn=map_fn, mem_map=True,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/lazy_loader.py", line 190, in __init__
+    self.lens = pkl.load(open(lenpath, 'rb'))
+EOFError: Ran out of input
+Traceback (most recent call last):
+  File "pretrain_glm.py", line 543, in <module>
+    main()
+  File "pretrain_glm.py", line 451, in main
+    train_data, val_data, test_data, = get_train_val_test_data(args, tokenizer)
+  File "pretrain_glm.py", line 409, in get_train_val_test_data
+    train_data, val_data, test_data = data_config.apply(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 119, in apply
+    return make_loaders(args, tokenizer)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/configure_data.py", line 236, in make_loaders
+    train = data_utils.make_dataset(**data_set_args)
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in make_dataset
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 164, in <listcomp>
+    _datasets = [get_dataset(p, tokenizer=tokenizer, pre_tokenize=pre_tokenize, no_lazy_loader=no_lazy_loader,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/__init__.py", line 102, in get_dataset
+    ssm_indices = LazyLoader(lazy_path, data_type='ssm_idx', map_fn=map_fn, mem_map=True,
+  File "/dataset/fd5061f6/liuxiao/BlockLM-ssm/data_utils/lazy_loader.py", line 190, in __init__
+    self.lens = pkl.load(open(lenpath, 'rb'))
+EOFError: Ran out of input
+Killing subprocess 735465
+Killing subprocess 735466
+Killing subprocess 735467
+Killing subprocess 735468
+Killing subprocess 735469
+Killing subprocess 735470
+Killing subprocess 735471
+Killing subprocess 735472
+Traceback (most recent call last):
+  File "/opt/conda/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/opt/conda/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/opt/conda/lib/python3.8/site-packages/deepspeed/launcher/launch.py", line 171, in <module>
+    main()
+  File "/opt/conda/lib/python3.8/site-packages/deepspeed/launcher/launch.py", line 161, in main
+    sigkill_handler(signal.SIGTERM, None)  # not coming back
+  File "/opt/conda/lib/python3.8/site-packages/deepspeed/launcher/launch.py", line 139, in sigkill_handler
+    raise subprocess.CalledProcessError(returncode=last_return_code, cmd=cmd)
+subprocess.CalledProcessError: Command '['/opt/conda/bin/python', '-u', 'pretrain_glm.py', '--local_rank=7', '--block-lm', '--task-mask', '--bert-prob', '1.0', '--gap-sentence-prob', '0.0', '--avg-block-length', '3', '--gpt-min-ratio', '0.0', '--gpt-infill-prob', '0.0', '--block-mask-prob', '0.1', '--experiment-name', 'blocklm-10b-ssm', '--model-parallel-size', '1', '--num-layers', '48', '--hidden-size', '4096', '--num-attention-heads', '64', '--seq-length', '513', '--max-sequence-length', '1025', '--save', '/dataset/fd5061f6/english_data/checkpoints', '--load', '/dataset/fd5061f6/english_data/checkpoints/blocklm-10b-512', '--old-checkpoint', '--no-load-optim', '--log-interval', '50', '--eval-interval', '1000', '--save-interval', '2000', '--train-iters', '250000', '--train-data', 'wikipedia_ssm', '--filter-english', '--tokenizer-type', 'GPT2BPETokenizer', '--tokenizer-model-type', 'gpt2', '--split', '949,50,1', '--distributed-backend', 'nccl', '--lr-decay-style', 'cosine', '--lr-decay-ratio', '0.1', '--lr-decay-iters', '175000', '--warmup', '0.04', '--checkpoint-activations', '--fp16', '--deepspeed', '--deepspeed_config', '/dataset/fd5061f6/liuxiao/BlockLM-ssm/config/config_block_10B.json']' returned non-zero exit status 1.
