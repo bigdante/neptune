@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/NePtune" isTestSource="false" />
+    </content>
     <orderEntry type="jdk" jdkName="Remote  unknown interpreter (sftp://xll@58.18.174.252:2201/home/xll/anaconda3/envs/dragon/bin/python3.8)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

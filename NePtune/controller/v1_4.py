@@ -31,6 +31,7 @@ class ControllerV4:
         # self.true_offset = int(sys.argv[4]) + self.process_id * 128671 + self.offset
         self.true_offset = self.process_id * 2500 + 40000 * 140
         self.true_end = min(self.true_offset + 2500, 6047494)
+
         self.sentence_offset = -1
         self.id_list = list(line.strip('\n') for line in open(f'/raid/liuxiao/nell_data/uncoref_ids/{self.process_id}.jsonl'))
         print(f"\n#######################\nTrue offset: {self.true_offset}\n#######################")
@@ -47,8 +48,8 @@ class ControllerV4:
         self.threshold = 4.0
 
         # create negative logging
-        self.log_dir = f'/raid/liuxiao/NePtune1.0/log/{datetime.now()}'
-        self.log_iter_dir = f'/raid/liuxiao/NePtune1.0/log/missing_entity_iterations'
+        self.log_dir = f'/raid/xll/NePtune1.0/log/{datetime.now()}'
+        self.log_iter_dir = f'/raid/xll/NePtune1.0/log/missing_entity_iterations'
         os.makedirs(self.log_dir)
         os.makedirs(self.log_iter_dir, exist_ok=True)
         self.log = open(join(self.log_dir, 'invalid_facts.jsonl'), 'w')
