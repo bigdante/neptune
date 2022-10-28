@@ -18,16 +18,26 @@ def get_extract_port(process_id):
 
 class ControllerV1:
     def __init__(self, process_id=0, offset=0, device=0):
+
         self.relation_schema = PromptSchema()
+
         self.fact_extraction = PromptExtractor(port=get_extract_port(process_id))
+
+        # 这里传给fact_verification一个doc，则会经过request.post请求将answer返回 TODO:answer是啥
         self.fact_verification = partial(MixedNLIWrapper, args=(process_id, FV_MAPPING[process_id]))  # MixedNLI(f'cuda:{device}')
 
         self.process_id = process_id
+        # TODO：offset是用于做什么
         self.offset = offset
+
         # self.true_offset = int(sys.argv[4]) + self.process_id * 128671 + self.offset
+        # TODO：true_offset的作用
         self.true_offset = OFFSETS[self.process_id]
+        # TODO：true_end的作用
         self.true_end = min(self.true_offset + 30952, 6047494)
+
         self.sentence_offset = -1
+
         print(f"\n#######################\nTrue offset: {self.true_offset}\n#######################")
 
         self.underline_title_to_objectId = json.load(
@@ -38,6 +48,9 @@ class ControllerV1:
             open(join('/raid/xll/nell_data/wikidata/wikidata_relation_tail_uniqueness_frequency_stats.json')))
         self.relation_tails = json.load(
             open(join('/raid/xll/nell_data/wikidata/wikidata_relation_to_candidate_aliases.json')))
+        
+
+        #TODO：threshold的作用
         self.threshold = 4.0
 
         # create negative logging
@@ -47,6 +60,7 @@ class ControllerV1:
         os.makedirs(self.log_iter_dir, exist_ok=True)
         self.log = open(join(self.log_dir, 'invalid_facts.jsonl'), 'w')
         self.log_process = open(join(self.log_dir, 'processed_sentences.jsonl'), 'w')
+        
         if os.path.exists(join(self.log_iter_dir, f'{process_id}')):
             self.offset = int(open(join(self.log_iter_dir, f'{process_id}')).read().strip())
 
