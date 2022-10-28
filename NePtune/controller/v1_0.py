@@ -31,18 +31,18 @@ class ControllerV1:
         print(f"\n#######################\nTrue offset: {self.true_offset}\n#######################")
 
         self.underline_title_to_objectId = json.load(
-            open('/raid/liuxiao/nell_data/hailong/title_underline_to_objectId.json'))
+            open('/raid/xll/nell_data/hailong/title_underline_to_objectId.json'))
 
         # load relation filter
         self.relation_freq = json.load(
-            open(join('/raid/liuxiao/nell_data/wikidata/wikidata_relation_tail_uniqueness_frequency_stats.json')))
+            open(join('/raid/xll/nell_data/wikidata/wikidata_relation_tail_uniqueness_frequency_stats.json')))
         self.relation_tails = json.load(
-            open(join('/raid/liuxiao/nell_data/wikidata/wikidata_relation_to_candidate_aliases.json')))
+            open(join('/raid/xll/nell_data/wikidata/wikidata_relation_to_candidate_aliases.json')))
         self.threshold = 4.0
 
         # create negative logging
-        self.log_dir = f'/raid/liuxiao/NePtune1.0/log/{datetime.now()}'
-        self.log_iter_dir = f'/raid/liuxiao/NePtune1.0/log/iterations'
+        self.log_dir = f'/raid/xll/nell_code/log/{datetime.now()}'
+        self.log_iter_dir = f'/raid/xll/nell_code/log/iterations'
         os.makedirs(self.log_dir)
         os.makedirs(self.log_iter_dir, exist_ok=True)
         self.log = open(join(self.log_dir, 'invalid_facts.jsonl'), 'w')

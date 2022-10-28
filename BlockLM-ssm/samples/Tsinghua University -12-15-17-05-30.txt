@@ -1,0 +1,4 @@
+ [CLS] Tsinghua University (Chinese: 清华大学) is a major public research university in Beijing, and a member of the C9 League. In other words, Tsinghua University is located in the Beijing
+ [CLS] Tsinghua University (Chinese: 清华大学) is a major public research university in Beijing, and a member of the C9 League. In other words, Tsinghua University is located in the 9th ring road
+ [CLS] Tsinghua University (Chinese: 清华大学) is a major public research university in Beijing, and a member of the C9 League. In other words, Tsinghua University is located in the 9th
+ [CLS] Tsinghua University (Chinese: 清华大学) is a major public research university in Beijing, and a member of the C9 League. In other words, Tsinghua University is located in the 9th Ring Road
