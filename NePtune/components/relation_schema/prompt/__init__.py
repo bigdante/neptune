@@ -50,7 +50,7 @@ class PromptSchema:
     KILT_RELATION_PIDS = set(list(KILT_RELATION.values()))
 
     # EXTRACTED_RELATIONS = json.load(open('/raid/liuxiao/NePtune1.0/data/stats/fact/relation_stats.json'))
-    EXTRACTED_RELATIONS = json.load(open('/raid/xll/NePtune/data/stats/fact/relation_stats.json'))
+    EXTRACTED_RELATIONS = json.load(open('/raid/xll/nell_code/NePtune/data/stats/fact/relation_stats.json'))
 
     def __init__(self):
         # type to relation

@@ -16,11 +16,20 @@ class BasePage(Document):
     source = StringField(required=True)
     source_id = StringField()
 
+    # meta = {
+    #     "abstract": True,
+    #     "collection": "page",
+    #     "indexes": [
+    #         "source_id",
+    #         "source"
+    #     ]
+    # }
     meta = {
         "abstract": True,
         "collection": "page",
-        "indexes": [
-            "source_id",
-            "source"
-        ]
+        # "indexes": [
+        #     "source_id",
+        #     "source"
+        # ],
+        "db_alias": "NePtune"
     }

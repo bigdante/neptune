@@ -1,4 +1,4 @@
-#!/bin/bash
+
 source $1
 
 MPSIZE=1
@@ -10,6 +10,8 @@ TEMP=0.9
 #If TOPK/TOPP are 0 it defaults to greedy sampling, top-k will also override top-p
 TOPK=1
 TOPP=0
+
+
 
 python -m torch.distributed.launch --nproc_per_node=$MPSIZE --master_port $MASTER_PORT fewrel_ent_serving_desc_multi.py\
        --mode inference \
