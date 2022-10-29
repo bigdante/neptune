@@ -1,1 +1,0 @@
-python -m fortest.a 123 34 55

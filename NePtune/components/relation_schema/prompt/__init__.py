@@ -94,9 +94,12 @@ class PromptSchema:
             entity.save()
         if len(entity.types) == 0:
             return list(head_constraints.values()), [False] * len(head_constraints)
+
         entity_constraints = entity.types.get('property-as_head')
+
         if entity_constraints is None:
             return list(head_constraints.values()), [False] * len(head_constraints)
+
         entity_constraints = set(entity_constraints.keys())
 
         # filtering
@@ -182,6 +185,7 @@ class PromptSchema:
 
     def __call__(self, doc: Union[BaseParagraph, BaseSentence], mention: BaseMention):
         # TODO: currently only consider the first two concepts of the first concept-sequence
+
         if len(mention.entity.types) == 0:
             if mention.entity.equivalents.get('wikidata') is None:
                 return []
@@ -201,6 +205,7 @@ class PromptSchema:
             # return []
             concepts = mention.entity.types[0]
             head_constraints = dict()
+            # TODO: 为什么只取一个？？？
             for concept in concepts[:1]:
                 for relation in concept.asHeadConstraint:
                     if relation.sourceId not in head_constraints \
@@ -208,12 +213,15 @@ class PromptSchema:
                             and not relation.text.startswith('category') \
                             and relation.sourceId not in self.DATA_RELATION:  # TODO: avoid unverifiable data properties
                         head_constraints[relation.sourceId] = relation
+
             for concept in concepts[1:]:
                 for relation in concept.asHeadConstraint:
                     if relation.sourceId in self.KILT_RELATION_PIDS:  # TODO: set for kilt zero_rc dataset (trex not yet)
                         head_constraints[relation.sourceId] = relation
+
             head_constraints, satisfy_type_constraints = self.head_constraint_filter(mention.entity, head_constraints)
         # head_constraints, satisfy_type_constraints = list(head_constraints.values()), [None] * len(head_constraints)
+
         all_queries = []
         for relation, is_satisfied in zip(head_constraints, satisfy_type_constraints):
             queries = []

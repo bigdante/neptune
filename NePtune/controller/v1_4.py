@@ -33,12 +33,12 @@ class ControllerV4:
         self.true_end = min(self.true_offset + 2500, 6047494)
 
         self.sentence_offset = -1
-        self.id_list = list(line.strip('\n') for line in open(f'/raid/liuxiao/nell_data/uncoref_ids/{self.process_id}.jsonl'))
+        self.id_list = list(line.strip('\n') for line in open(f'/raid/xll/nell_data/uncoref_ids/{self.process_id}.jsonl'))
         print(f"\n#######################\nTrue offset: {self.true_offset}\n#######################")
 
         self.sourceId_to_entity_objectId = json.load(
-            open('/raid/liuxiao/nell_data/hailong/all_entity_sourceId_to_objectId.json'))
-        self.title_to_sourceId = json.load(open('/raid/liuxiao/nell_data/hailong/enwiki_display_to_id.json'))
+            open('/raid/xll/nell_data/hailong/all_entity_sourceId_to_objectId.json'))
+        self.title_to_sourceId = json.load(open('/raid/xll/nell_data/hailong/enwiki_display_to_id.json'))
 
         # load relation filter
         self.relation_freq = json.load(
@@ -48,8 +48,8 @@ class ControllerV4:
         self.threshold = 4.0
 
         # create negative logging
-        self.log_dir = f'/raid/xll/NePtune1.0/log/{datetime.now()}'
-        self.log_iter_dir = f'/raid/xll/NePtune1.0/log/missing_entity_iterations'
+        self.log_dir = f'/raid/xll/nell_log/{datetime.now()}'
+        self.log_iter_dir = f'/raid/xll/nell_log/missing_entity_iterations'
         os.makedirs(self.log_dir)
         os.makedirs(self.log_iter_dir, exist_ok=True)
         self.log = open(join(self.log_dir, 'invalid_facts.jsonl'), 'w')
