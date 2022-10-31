@@ -15,5 +15,6 @@ class WikidataEntity(BaseEntity):
     types = DictField()
 
     meta = {
-        "collection": "wikidata_entity"
+        "collection": "wikidata_entity",
+        "db_alias": "NePtune"
     }

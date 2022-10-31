@@ -23,5 +23,6 @@ class BaseRelation(Document):
         "indexes": [
             "sourceId",
             "$text"
-        ]
+        ],
+        "db_alias": "NePtune"
     }

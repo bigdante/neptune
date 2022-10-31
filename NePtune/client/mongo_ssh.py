@@ -2,17 +2,12 @@ from mongoengine import connect
 
 
 class MongoDB:
-    host = '192.69.26.238'
+    host = '127.0.0.1'
+    # host = '192.168.'
     port = 30019
-    user = 'neptune'
+    user = 'xll'
     dbname = 'NePtune'
-    passwd = 'neptune2022'
-
-    # host = '166.111.7.106'
-    # port = 30020
-    # user = 'xll'
-    # dbname = 'NePtune'
-    # passwd = 'xllKEG2022'
+    passwd = 'xllKEG2022'
 
     authentication_source = ''
     alias_remote = 'NePtune'

@@ -12,5 +12,6 @@ class WikipediaEntity(BaseEntity):
     url = URLField()
 
     meta = {
-        "collection": "entity"
+        "collection": "entity",
+        "db_alias": "NePtune"
     }

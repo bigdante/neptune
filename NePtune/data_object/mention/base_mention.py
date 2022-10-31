@@ -26,7 +26,9 @@ class BaseMention(EmbeddedDocument):
     temp = DictField()
 
     meta = {
-        "allow_inheritance": True
+        "allow_inheritance": True,
+        "db_alias": "NePtune",
+
     }
 
     @classmethod

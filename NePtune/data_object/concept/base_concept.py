@@ -22,5 +22,6 @@ class BaseConcept(Document):
         "collection": "concept",
         "indexes": [
             "$text"
-        ]
+        ],
+        "db_alias": "NePtune"
     }

@@ -25,7 +25,8 @@ class ControllerV1:
 
         # 这里传给fact_verification一个doc，则会经过request.post请求将answer返回
         # TODO:模块作用，返回结果的分数值
-        self.fact_verification = partial(MixedNLIWrapper, args=(process_id, FV_MAPPING[process_id]))  # MixedNLI(f'cuda:{device}')
+        self.fact_verification = partial(MixedNLIWrapper,
+                                         args=(process_id, FV_MAPPING[process_id]))  # MixedNLI(f'cuda:{device}')
 
         self.process_id = process_id
         # TODO：offset是用于做什么？是为了多卡训练时候，每个卡负责一段的数据吗
@@ -41,15 +42,17 @@ class ControllerV1:
 
         print(f"\n#######################\nTrue offset: {self.true_offset}\n#######################")
 
+        # TODO：这个对应entity表中的text和id
         self.underline_title_to_objectId = json.load(
             open('/raid/xll/nell_data/hailong/title_underline_to_objectId.json'))
 
         # load relation filter
+        # 这个记录relation的出现次数
         self.relation_freq = json.load(
             open(join('/raid/xll/nell_data/wikidata/wikidata_relation_tail_uniqueness_frequency_stats.json')))
+        # relation以及对应的别名
         self.relation_tails = json.load(
             open(join('/raid/xll/nell_data/wikidata/wikidata_relation_to_candidate_aliases.json')))
-
 
         # TODO：threshold的作用
         self.threshold = 4.0
@@ -65,6 +68,7 @@ class ControllerV1:
         if os.path.exists(join(self.log_iter_dir, f'{process_id}')):
             self.offset = int(open(join(self.log_iter_dir, f'{process_id}')).read().strip())
 
+    # 由于有的mention没有对应的entity，就需要通过underline_title_to_objectId表 + entity表进行查找
     def map_to_entity(self, mention: BaseMention):
         if mention.temp.get('entry'):
             objectId = self.underline_title_to_objectId.get(mention.temp['entry'].replace(' ', '_'))
@@ -72,8 +76,9 @@ class ControllerV1:
                 return WikipediaEntity.objects.get(id=objectId)
 
     '''
-        从WikipeidaPage数据表中获取到区间的所有句子
+        从（Wikipeida）Page数据表中获取到区间的所有句子
     '''
+
     def yield_sentence_from_page(self):
         while self.true_offset < self.true_end:
             pages = WikipediaPage.objects[self.true_offset: min(self.true_offset + 100, self.true_end)]
@@ -81,43 +86,52 @@ class ControllerV1:
                 for paragraph in page.paragraphs:
                     for sentence in paragraph.sentences:
                         yield sentence
+            # TODO: 为什么要100
             self.true_offset += 100
+
     '''
         这个模块没有使用。
         从数据库的sentence表中得到所有区间范围的句子
     '''
+
     def yield_sentence(self):
         while self.true_offset < self.true_end:
             sentences = BaseSentence.objects[self.true_offset: min(self.true_offset + 100, self.true_end)]
             for s in sentences:
                 yield s
             self.true_offset += 100
+
     '''
         从page中得到所有的sentence
     '''
+
     def get_sentence(self):
         for idx, sentence in tqdm(enumerate(self.yield_sentence_from_page())):
             self.sentence_offset += 1
+
             if self.sentence_offset < self.offset:
                 continue
-            # TODO：为了记录啥？？
+            # TODO：为了记录啥？？每是个句子记录一次？
             if idx % 10 == 0:
                 with open(join(join(self.log_iter_dir, f'{self.process_id}')), 'w') as f:
                     f.write(str(idx))
             yield sentence
 
+    '''
+        获取句子中的mention，也就是句子中的head entity。
+        
+    '''
+
     def get_valid_mention(self, sentence: BaseSentence):
-        # mention 记录了句子的所有的被抽取出来的实体 TODO:是仅仅wikipedia的entity的吗
         for mention in sentence.mentions:
-            # 如果mention没有entity，那么将entity表的内容给mention.entity，前提是如果
-            # 有对应的id，并且查找到了东西。
+            # 如果没有entity（对应wikipedia类，entity表），说明这个mention还没有和entity对应，则需要通过temp.entry找到entity
             if mention.entity is None:
-                # TODO：如果找到了为什么返回的不是id，而是一个对象，而在数据库中未查找到
                 mention.entity = self.map_to_entity(mention)
                 if mention.entity is None:
                     continue
-            # TODO:应该是不为空时候save，这里似乎有点影响效率
-            sentence.save()
+                sentence.save()
+            # TODO:应该是不为空时候save，这里似乎有点影响效率，所以调整到上面
+            # sentence.save()
             # mention.entity.fetch()
             # mention.entity = WikipediaEntity.objects.get(id=mention.entity)
             yield mention
@@ -125,6 +139,7 @@ class ControllerV1:
     '''
         得到fact，
     '''
+
     def get_facts(self, sentence: BaseSentence, mention: BaseMention):
         # 这里的gueries得到了每个句子的输入数据，也就是prompt等信息
         queries = self.relation_schema(sentence, mention)
@@ -188,12 +203,11 @@ class ControllerV1:
     def run(self):
         for sentence in self.get_sentence():
             num_of_facts = 0
-            # mentions
+            # mentions 中存着该句子的所有head，就是要预测该head对应的relation和tail。
             for mention in self.get_valid_mention(sentence):
-                # 这里将sentence和对应的mention输入到get_facts得到glm模型得到的所有fact，也就是这个head预测的
-                # tail，并且得到了relation
+                # 这里将sentence和对应的mention输入到get_facts得到glm模型得到的所有fact，也就是预测head的tail和relation
                 facts = self.get_facts(sentence, mention)
-                #
+                print("facts:", facts)
                 verified_facts = self.get_verification(facts)
                 num_of_facts += len(verified_facts)
             # if num_of_facts > 0:
@@ -205,5 +219,6 @@ class ControllerV1:
 
 if __name__ == '__main__':
     print(sys.argv)
-    controller = ControllerV1(process_id=int(sys.argv[1]))
+    # controller = ControllerV1(process_id=int(sys.argv[1]))
+    controller = ControllerV1(process_id=0)
     controller.run()

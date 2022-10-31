@@ -23,5 +23,5 @@ class BaseEntity(Document):
         "indexes": [
             "source",
             "sourceId"
-        ]
+        ],
     }

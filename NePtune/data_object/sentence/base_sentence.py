@@ -20,5 +20,6 @@ class BaseSentence(Document):
     # refPage = LazyReferenceField('BasePage')
 
     meta = {
-        "collection": "sentence"
+        "collection": "sentence",
+        "db_alias": "NePtune"
     }

@@ -22,7 +22,11 @@ class TripleFact(BaseFact):
     evidenceText = StringField()
 
     verification = DictField()
+    upVote = IntField()
+    downVote = IntField()
+    isNewFact = BooleanField()
 
     meta = {
-        "collection": "triple_fact_missing"
+        "collection": "triple_fact_missing",
+        "db_alias": "NePtune"
     }

@@ -3,7 +3,8 @@ import json
 
 import mongoengine.base.datastructures
 
-from data_object import BaseMention, BaseParagraph, BaseSentence, BaseRelation, WikipediaPage # , DatasetSentence, DatasetMention,
+from data_object import BaseMention, BaseParagraph, BaseSentence, BaseRelation, \
+    WikipediaPage  # , DatasetSentence, DatasetMention,
 
 from os.path import join
 from typing import Union, List
@@ -11,28 +12,33 @@ from collections import defaultdict
 
 
 class PromptSchema:
+    # 作为queries的模板
     template = [
         "[ENT_DESC]\n\nSentence: [TEXT] [MENTION] [PROMPT] [MASK]",
         "\n\nExtract answers from the following sentence: [TEXT] TL;DR : [MENTION] [PROMPT] [MASK]"
         # Based on the following background: [ENT_DESC]
     ]
+    # TODO：什么作用
     STOP_RELATION = [
         'follows', 'followed by', 'contains administrative territorial entity', 'different from', 'main subject',
         'has list', 'category of associated people', 'topic\'s main category', 'category of associated people',
         'described by source', 'language used', "topic's main template", 'language of work or name',
         'on focus list of Wikimedia project', 'languages spoken, written or signed', 'has parts of the class',
     ]
+    # TODO：判断这个的作用
     SELF_CONTAIN_RELATION = [
         'located in administrative territorial entity', 'headquarter location', 'location of formation', 'country',
         'applies to jurisdiction'
     ]
 
     # data (attribute) relations
+    #
     NEEDED_DATA_RELATION = {'date of birth': 'P569', 'date of death': 'P570', 'inception': 'P571',
                             'dissolved, abolished or demolished': 'P576',
                             'publication date': 'P577', 'start time': 'P580', 'end time': 'P582',
                             'point in time': 'P585', 'unemployment rate': 'P1198',
                             'start period': 'P3451', 'end period': 'P3416', 'set in period': 'P2408'}
+    # TODO：作用？？
     KILT_RELATION = {'production company': 'P272', 'crosses': 'P177', 'from narrative universe': 'P1080',
                      'occupant': 'P466', 'UTC date of spacecraft launch': 'P619', 'drafted by': 'P647',
                      'date of official opening': 'P1619', 'military rank': 'P410', 'spouse': 'P26',
@@ -44,21 +50,29 @@ class PromptSchema:
                      'siblings': 'P3373', 'developer': 'P178', 'sport': 'P641', 'country': 'P17',
                      'publication date': 'P577', 'screenwriter': 'P58', 'architectural style': 'P149',
                      'site of astronomical discovery': 'P65', 'replaced by': 'P1366'}
-    DATA_RELATION = set(json.load(open('/raid/xll/nell_data/hailong/data_triple_relations.json'))).difference(list(
-        NEEDED_DATA_RELATION.values()))
-        
     KILT_RELATION_PIDS = set(list(KILT_RELATION.values()))
 
-    # EXTRACTED_RELATIONS = json.load(open('/raid/liuxiao/NePtune1.0/data/stats/fact/relation_stats.json'))
+    # TODO：返回包含在data_triple_relation中，但是不包含在need_data_relation中的relation，但是这么做为了什么
+    DATA_RELATION = set(json.load(open('/raid/xll/nell_data/hailong/data_triple_relations.json'))).difference(list(
+        NEEDED_DATA_RELATION.values()))
+
+    # TODO：已经抽取出来的relation的统计情况？？这个和wikidata_relation_tail_uniqueness_frequency_stats什么关系
     EXTRACTED_RELATIONS = json.load(open('/raid/xll/nell_code/NePtune/data/stats/fact/relation_stats.json'))
 
     def __init__(self):
         # type to relation
+        # 将fewrel（few shot relation classification dataset）的prompt给保存在pid2prompt, {'P12':['a','b',...]}
+        # TODO：这个prompt文件从哪里来的？？？是代表着prompt的alias吗
         self.pid2prompt = self.load_prompt()
-        self.ins_type2props = json.load(
-            open('/raid/xll/nell_data/hailong/Schema/wikidata_ins_type_to_relations.json'))
-        self.head_type2props = json.load(
-            open('/raid/xll/nell_data/hailong/Schema/wikidata_head_type_to_relations.json'))
+        # TODO：这个文件的作用？？
+        self.ins_type2props = json.load(open('/raid/xll/nell_data/hailong/Schema/wikidata_ins_type_to_relations.json'))
+        # headtype2relation，根据head的type（例如"Q215627"），其预测的relation只能是对应的列表中的一种，这样就缩小了范围
+        # TODO：这个文件从哪里获得的？人工构建吗
+        self.head_type2props = json.load(open('/raid/xll/nell_data/hailong/Schema/wikidata_head_type_to_relations.json'))
+
+    '''
+        加载prompt对应的编号和多个text，格式：{'P12':['a','b',...]}
+    '''
 
     def load_prompt(self):
         pid2prompt = defaultdict(list)
@@ -203,9 +217,10 @@ class PromptSchema:
         else:
             # 2. Old case: every wikipedia entity here has manual-annotated types TODO: skip this part this time
             # return []
+            # 这里返回该entity对应的relation 的type类型。也就是concept表的内容。最后其实是对应到表relation到内容。
             concepts = mention.entity.types[0]
             head_constraints = dict()
-            # TODO: 为什么只取一个？？？
+            # TODO: 第一个和后面几个有什么区别
             for concept in concepts[:1]:
                 for relation in concept.asHeadConstraint:
                     if relation.sourceId not in head_constraints \
