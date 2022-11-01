@@ -520,6 +520,7 @@ def initialize_distributed(args):
     """Initialize torch.distributed."""
 
     # the automatic assignment of devices has been moved to arguments.py
+    # print(args.device)
     torch.cuda.set_device(args.device)
     # Call the init process
     init_method = 'tcp://'

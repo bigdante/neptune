@@ -18,9 +18,7 @@ def get_extract_port(process_id):
 
 class ControllerV1:
     def __init__(self, process_id=0, offset=0, device=0):
-        # TODO:模块作用，返回sentence和对应的结合了prompt的queries
         self.relation_schema = PromptSchema()
-        # TODO:模块作用，返回输入的queries查找到的结果
         self.fact_extraction = PromptExtractor(port=get_extract_port(process_id))
 
         # 这里传给fact_verification一个doc，则会经过request.post请求将answer返回
@@ -29,7 +27,6 @@ class ControllerV1:
                                          args=(process_id, FV_MAPPING[process_id]))  # MixedNLI(f'cuda:{device}')
 
         self.process_id = process_id
-        # TODO：offset是用于做什么？是为了多卡训练时候，每个卡负责一段的数据吗
         self.offset = offset
 
         # self.true_offset = int(sys.argv[4]) + self.process_id * 128671 + self.offset
@@ -106,7 +103,7 @@ class ControllerV1:
     '''
 
     def get_sentence(self):
-        for idx, sentence in tqdm(enumerate(self.yield_sentence_from_page())):
+        for idx, sentence in enumerate(self.yield_sentence_from_page()):
             self.sentence_offset += 1
 
             if self.sentence_offset < self.offset:
@@ -143,7 +140,6 @@ class ControllerV1:
     def get_facts(self, sentence: BaseSentence, mention: BaseMention):
         # 这里的gueries得到了每个句子的输入数据，也就是prompt等信息
         queries = self.relation_schema(sentence, mention)
-
         return self.fact_extraction(sentence, queries)
 
     def get_verification(self, facts: TripleFact):
@@ -201,15 +197,18 @@ class ControllerV1:
         return verified_facts
 
     def run(self):
+        print("===========run============")
         for sentence in self.get_sentence():
+            print("sentence: ", sentence.text)
             num_of_facts = 0
-            # mentions 中存着该句子的所有head，就是要预测该head对应的relation和tail。
             for mention in self.get_valid_mention(sentence):
-                # 这里将sentence和对应的mention输入到get_facts得到glm模型得到的所有fact，也就是预测head的tail和relation
+                print("mention: ", mention.text)
                 facts = self.get_facts(sentence, mention)
                 print("facts:", facts)
                 verified_facts = self.get_verification(facts)
+                print("verified_facts: ", verified_facts)
                 num_of_facts += len(verified_facts)
+                print("num_of_facts: ", num_of_facts)
             # if num_of_facts > 0:
             #     sentence.temp['has_prediction'] = True
             # sentence.temp['last_processed'] = datetime.now()
@@ -220,5 +219,5 @@ class ControllerV1:
 if __name__ == '__main__':
     print(sys.argv)
     # controller = ControllerV1(process_id=int(sys.argv[1]))
-    controller = ControllerV1(process_id=0)
+    controller = ControllerV1(process_id=2)
     controller.run()

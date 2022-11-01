@@ -5,7 +5,7 @@ import requests
 import os
 
 from typing import List
-os.environ['TRANSFORMERS_CACHE'] = '/raid/liuxiao/checkpoints/cache/'
+os.environ['TRANSFORMERS_CACHE'] = '/raid/xll/checkpoints/cache/'
 
 MAPPING = [
     "192.93.237.27",
@@ -56,6 +56,8 @@ class MixedNLI:
 
 def extract_by_api(doc, args):
     #
+    print(f'http://{MAPPING[get_node(args[0])]}:{21500 + args[1]}/query')
+    # with requests.post(f'http://127.0.0.1:21534/query', json=doc) as resp:
     with requests.post(f'http://{MAPPING[get_node(args[0])]}:{21500 + args[1]}/query', json=doc) as resp:
         answers = resp.json()
         return answers

@@ -11,18 +11,20 @@ TEMP=0.9
 TOPK=1
 TOPP=0
 
+#python fewrel_ent_serving_desc_multi.py
 
 
 python -m torch.distributed.launch --nproc_per_node=$MPSIZE --master_port $MASTER_PORT fewrel_ent_serving_desc_multi.py\
        --mode inference \
-       --model-parallel-size $MPSIZE \
-       $MODEL_ARGS \
        --length-penalty 0.7 \
        --temperature $TEMP \
        --top_k $TOPK \
        --top_p $TOPP \
-       --fp16 \
        --out-seq-length $MAXSEQLEN \
+       --model-parallel-size $MPSIZE \
+       $MODEL_ARGS \
+       --fp16 \
        --batch-size 2 \
        --inference-strategy-constrained \
-       --serving-port $2
+       --serving-port $2 \
+

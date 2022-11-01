@@ -38,17 +38,17 @@ def add_model_config_args(parser):
                        help="use the encoder-decoder architecture for blocklm")
     group.add_argument('--attention-dropout', type=float, default=0.1,
                        help='dropout probability for attention weights')
-    group.add_argument('--num-attention-heads', type=int, default=64,
+    group.add_argument('--num-attention-heads', type=int, default=16,
                        help='num of transformer attention heads')
-    group.add_argument('--hidden-size', type=int, default=4096,
+    group.add_argument('--hidden-size', type=int, default=1024,
                        help='tansformer hidden size')
-    group.add_argument('--num-layers', type=int, default=48,
+    group.add_argument('--num-layers', type=int, default=24,
                        help='num decoder layers')
     group.add_argument('--layernorm-epsilon', type=float, default=1e-5,
                        help='layer norm epsilon')
     group.add_argument('--hidden-dropout', type=float, default=0.1,
                        help='dropout probability for hidden state transformer')
-    group.add_argument('--max-sequence-length', type=int, default=1025,
+    group.add_argument('--max-sequence-length', type=int, default=512,
                        help='maximum number of position embeddings to use')
     group.add_argument('--vocab-size', type=int, default=0,
                        help='vocab size to use for non-character-level '
@@ -115,7 +115,7 @@ def add_training_args(parser):
     group.add_argument('--save-interval', type=int, default=5000,
                        help='number of iterations between saves')
     group.add_argument('--mode', type=str,
-                       default='inference',
+                       default='pretrain',
                        choices=['pretrain',
                                 'finetune',
                                 'inference'
@@ -132,7 +132,8 @@ def add_training_args(parser):
 
     group.add_argument('--local_rank', type=int, default=None,
                        help='local rank passed from distributed launcher')
-    group.add_argument('--fp16',help='Run model in fp16 mode',default=True)
+    group.add_argument('--fp16', action='store_true',
+                       help='Run model in fp16 mode')
     group.add_argument('--epochs', type=int, default=None,
                        help='Number of finetunning epochs. Zero results in evaluation only.')
     group.add_argument('--label-smoothing', type=float, default=0.0)
@@ -165,7 +166,7 @@ def add_training_args(parser):
                             'or rng state from checkpoint and set iteration to 0. '
                             'Assumed when loading a release checkpoint.')
     # TODO: add serving port
-    group.add_argument('--serving-port', type=int, help='Serving port for NePtune inference.',default=21534)
+    group.add_argument('--serving-port', type=int, help='Serving port for NePtune inference.')
     return parser
 
 
@@ -188,7 +189,7 @@ def add_evaluation_args(parser):
                        help='Maximum sequence length to process for '
                             'evaluation. Defaults to `--seq-length`')
     group.add_argument('--overlapping-eval', type=int, default=32)
-    group.add_argument('--inference-strategy-constrained', default=True,
+    group.add_argument('--inference-strategy-constrained', action='store_true',
                        help="whether use constrained beam search")
 
     return parser
@@ -200,20 +201,20 @@ def add_text_generate_args(parser):
     group = parser.add_argument_group('Text generation', 'generation configurations')
 
     group.add_argument("--temperature", type=float, default=1.0)
-    group.add_argument("--top_p", type=float, default=0)
-    group.add_argument("--top_k", type=int, default=1)
+    group.add_argument("--top_p", type=float, default=0.0)
+    group.add_argument("--top_k", type=int, default=0)
     group.add_argument("--num-beams", type=int, default=1)
-    group.add_argument("--length-penalty", type=float, default=0.7)
+    group.add_argument("--length-penalty", type=float, default=0.0)
     group.add_argument("--no-repeat-ngram-size", type=int, default=0)
     group.add_argument("--min-tgt-length", type=int, default=0)
-    group.add_argument("--out-seq-length", type=int, default=384)
+    group.add_argument("--out-seq-length", type=int, default=256)
     group.add_argument('--input-source', type=str, default='interactive',
                        help='what input mode to use, interactive or path')
     group.add_argument('--output-path', type=str, default='./samples',
                        help='path to place the generated samples')
     group.add_argument('--with-id', action='store_true',
                        help='If each line is prepended with an id.')
-    group.add_argument('--max-inference-batch-size', type=int, default=2)
+    group.add_argument('--max-inference-batch-size', type=int, default=12)
     group.add_argument('--device', type=int, default=-1)
     group.add_argument("--select-topk", action='store_true')
     group.add_argument("--blank-maskratio", type=float, default=0.1)
@@ -274,16 +275,16 @@ def add_data_args(parser):
                        help='Shuffle data. Shuffling is deterministic '
                             'based on seed and current epoch.')
     group.add_argument('--filter-english', action='store_true')
-    group.add_argument('--dataset-temperature', type=float, default=0.9)
+    group.add_argument('--dataset-temperature', type=float, default=1.0)
 
     group.add_argument('--tokenizer-model-type', type=str,
-                       default="gpt2",
+                       default=None,
                        help="Model type to use for sentencepiece tokenization \
                            (one of ['bpe', 'char', 'unigram', 'word']) or \
                            bert vocab to use for BertWordPieceTokenizer (one of \
                            ['bert-large-uncased', 'bert-large-cased', etc.])")
     group.add_argument('--tokenizer-type', type=str,
-                       default='GPT2BPETokenizer',
+                       default='BertWordPieceTokenizer',
                        choices=['CharacterLevelTokenizer',
                                 'SentencePieceTokenizer',
                                 'BertWordPieceTokenizer',
@@ -296,7 +297,7 @@ def add_data_args(parser):
 def add_finetune_config_args(parser):
     group = parser.add_argument_group('finetune', 'finetune configurations')
     group.add_argument('--task', type=str, help='Task name.')
-    group.add_argument('--load-pretrained', type=str, help="Load pretrained model", default="/raid/xll/checkpoints/blocklm-10b-ssm/113400")
+    group.add_argument('--load-pretrained', type=str, help="Load pretrained model", default=None)
     group.add_argument('--pool-token', type=str, choices=['start', 'pad', 'cls'],
                        help='The token to pool the sequence representation', default='cls')
     group.add_argument('--cloze-eval', action='store_true', help='Evaluation dataset with cloze task')
@@ -336,7 +337,7 @@ def add_finetune_config_args(parser):
 def add_glm_args(parser):
     """Arguments for GLM"""
     group = parser.add_argument_group('GLM', 'GLM Configurations')
-    group.add_argument('--block-lm', help="whether use the BlockLM pre-training",default=True)
+    group.add_argument('--block-lm', action='store_true', help="whether use the BlockLM pre-training")
     group.add_argument('--masked-lm', action='store_true', help='whether to use the mlm objective')
     group.add_argument('--bert-prob', type=float, default=0.5)
     group.add_argument('--gpt-infill-prob', type=float, default=0.5)

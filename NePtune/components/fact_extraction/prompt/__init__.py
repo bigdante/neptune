@@ -43,9 +43,8 @@ class PromptExtractor:
             all_queries.append([query[1] for query in query_per_rel['queries']])
             query_id_map.extend([idx] * len(query_per_rel['queries']))
             all_answers.append([])
+
         q = flatten(all_queries)
-        with open("/raid/xll/nell_code/q.txt","w") as f:
-            f.write(str(q))
         all_responses = self.extract_by_api(q)
 
         for idx, response in enumerate(all_responses):
