@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 
 from .mixed_nli import MixedNLI
 
-processor = MixedNLI("cuda:7")
+processor = MixedNLI("cuda:2")
 
 
 class JSONEncoder(json.JSONEncoder):

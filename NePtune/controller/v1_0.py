@@ -1,12 +1,9 @@
 from components import PromptSchema, PromptExtractor, MixedNLIWrapper
 from data_object import BaseSentence, BasePage, BaseParagraph, BaseMention, TripleFact, WikipediaEntity, WikipediaPage
 from controller.offsets import OFFSETS, PORT_MAPPING, FV_MAPPING
-
-from tqdm import tqdm
 from datetime import datetime
 from os.path import join
 from functools import partial
-
 import json
 import os
 import sys
@@ -22,36 +19,27 @@ class ControllerV1:
         self.fact_extraction = PromptExtractor(port=get_extract_port(process_id))
 
         # 这里传给fact_verification一个doc，则会经过request.post请求将answer返回
-        # TODO:模块作用，返回结果的分数值
         self.fact_verification = partial(MixedNLIWrapper,
                                          args=(process_id, FV_MAPPING[process_id]))  # MixedNLI(f'cuda:{device}')
-
         self.process_id = process_id
         self.offset = offset
 
         # self.true_offset = int(sys.argv[4]) + self.process_id * 128671 + self.offset
-        # TODO：true_offset的作用
         self.true_offset = OFFSETS[self.process_id]
-        # TODO：true_end的作用，这个数字的意义
         self.true_end = min(self.true_offset + 30952, 6047494)
-        # TODO：sentence_offset的作用
         self.sentence_offset = -1
 
         print(f"\n#######################\nTrue offset: {self.true_offset}\n#######################")
 
-        # TODO：这个对应entity表中的text和id
         self.underline_title_to_objectId = json.load(
             open('/raid/xll/nell_data/hailong/title_underline_to_objectId.json'))
 
         # load relation filter
-        # 这个记录relation的出现次数
         self.relation_freq = json.load(
             open(join('/raid/xll/nell_data/wikidata/wikidata_relation_tail_uniqueness_frequency_stats.json')))
-        # relation以及对应的别名
         self.relation_tails = json.load(
             open(join('/raid/xll/nell_data/wikidata/wikidata_relation_to_candidate_aliases.json')))
 
-        # TODO：threshold的作用
         self.threshold = 4.0
 
         # create negative logging
@@ -190,6 +178,7 @@ class ControllerV1:
                 fact.numOfAnnotators = len(fact.annotator)
                 fact.save()
                 verified_facts.append(fact)
+                print("------save-------", fact.relationLabel, " ", fact.tail)
             else:
                 # invalid facts hit here
                 self.log.write(fact.to_json() + '\n')
@@ -204,16 +193,17 @@ class ControllerV1:
             for mention in self.get_valid_mention(sentence):
                 print("mention: ", mention.text)
                 facts = self.get_facts(sentence, mention)
-                print("facts:", facts)
                 verified_facts = self.get_verification(facts)
-                print("verified_facts: ", verified_facts)
                 num_of_facts += len(verified_facts)
-                print("num_of_facts: ", num_of_facts)
             # if num_of_facts > 0:
             #     sentence.temp['has_prediction'] = True
             # sentence.temp['last_processed'] = datetime.now()
             # sentence.save()
             self.log_process.write(str(sentence.id) + '\n')
+    def run_docred(self):
+        print("===========run docred============")
+        # load queries
+
 
 
 if __name__ == '__main__':

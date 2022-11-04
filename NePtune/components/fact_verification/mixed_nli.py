@@ -34,6 +34,7 @@ class MixedNLI:
         self.model = AutoModelForSequenceClassification.from_pretrained(self.hg_model_hub_name).to(device)
 
     def __call__(self, premise: List[str], hypothesis: List[str]) -> np.array:
+        print("working.......")
         with torch.no_grad():
             tokenized_input_seq_pair = self.tokenizer.batch_encode_plus(list(zip(premise, hypothesis)),
                                                                         max_length=self.max_length,
@@ -56,8 +57,8 @@ class MixedNLI:
 
 def extract_by_api(doc, args):
     #
-    print(f'http://{MAPPING[get_node(args[0])]}:{21500 + args[1]}/query')
-    # with requests.post(f'http://127.0.0.1:21534/query', json=doc) as resp:
-    with requests.post(f'http://{MAPPING[get_node(args[0])]}:{21500 + args[1]}/query', json=doc) as resp:
+    # print(f'http://{MAPPING[get_node(args[0])]}:{21500 + args[1]}/query')
+    with requests.post(f'http://127.0.0.1:21504/query', json=doc) as resp:
+    # with requests.post(f'http://{MAPPING[get_node(args[0])]}:{21500 + args[1]}/query', json=doc) as resp:
         answers = resp.json()
         return answers
